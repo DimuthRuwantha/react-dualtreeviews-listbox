@@ -1,0 +1,52 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install
+
+PATH: 
+  C:\Users\Dimuth\AppData\Roaming\npm-cache\_npx\18320;C:\Python38\Scripts\;C:\Python38\;C:\oracle\product\12.1.0\client_1\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Git\cmd;C:\Program Files\TortoiseGit\bin;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\dotnet\;C:\Windows\Microsoft.NET\Framework\v4.0.30319\;;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\nodejs\;C:\Users\Dimuth\AppData\Local\Microsoft\WindowsApps;C:\sonarqube\bin\windows-x86-64\;C:\sonar-scanner;C:\Users\Dimuth\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Dimuth\.dotnet\tools;C:\Windows\Microsoft.NET\Framework\v4.0.30319\;C:\Users\Dimuth\AppData\Local\Yarn\bin;C:\Users\Dimuth\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.0
+
+Node version: 
+  12.16.2
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, lstat 'D:\React\My npm packages\react-dualtreeviews-listbox\node_modules\react-scripts\node_modules\@babel\plugin-syntax-object-rest-spread'
+
+npm manifest: 
+  {
+    "name": "react-dualtreeviews-listbox-example",
+    "homepage": "https://DimuthRuwantha.github.io/react-dualtreeviews-listbox",
+    "version": "0.0.0",
+    "private": true,
+    "dependencies": {
+      "react": "link:../node_modules/react",
+      "react-dom": "link:../node_modules/react-dom",
+      "react-scripts": "link:../node_modules/react-scripts",
+      "react-dualtreeviews-listbox": "link:.."
+    },
+    "scripts": {
+      "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
+      "build": "node ../node_modules/react-scripts/bin/react-scripts.js build",
+      "test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
+      "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject"
+    },
+    "eslintConfig": {
+      "extends": "react-app"
+    },
+    "browserslist": [
+      ">0.2%",
+      "not dead",
+      "not ie <= 11",
+      "not op_mini all"
+    ]
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
