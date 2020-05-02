@@ -9,7 +9,7 @@
 ```bash
 npm install --save react-dualtreeviews-listbox
 ```
-## Prerrequisites
+## Prerequisites
 
 add Bootstrap4 for styling
 ```
