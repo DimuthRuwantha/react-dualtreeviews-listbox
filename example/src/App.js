@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { DualTreeViewListBox } from 'react-dualtreeviews-listbox'
 import 'react-dualtreeviews-listbox/dist/index.css'
@@ -41,7 +41,13 @@ var data = [{
 }]
 
 const App = () => {
-  return <DualTreeViewListBox data={data} />
+
+  const [selectedTree, setTree] = useState([])
+
+  return <div>
+    <p>{JSON.stringify(selectedTree)}</p>
+    <DualTreeViewListBox data={data} onnodemoved={(list) => setTree(list)} />
+    </div>
 }
 
 export default App
