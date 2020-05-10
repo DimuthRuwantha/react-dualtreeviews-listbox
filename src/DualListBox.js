@@ -27,7 +27,7 @@ class DualListBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: this.CloneObject(overview), 
+            list: props.tree ? this.CloneObject(props.tree) : [], 
             selected: null,
             selectedLeft: null,
             selectedRight: null,
@@ -44,11 +44,8 @@ class DualListBox extends React.Component {
     }
 //#region node click events
     handleLeftNodeClick = e => {
-        console.log("left node is seleced");
-            
         if(e.id !== "root")
         {
-            
             this.setState({ 
                 selected: e, 
                 selectedLeft: e,
@@ -119,10 +116,8 @@ class DualListBox extends React.Component {
     findPath(array, node){
         var path = []
         path.push(node.id)
-        //console.log(path)
         this.pushParent(array, node, path)
         path.reverse()
-        console.log("finally", path)
         return path
     }
 
@@ -131,7 +126,6 @@ class DualListBox extends React.Component {
         var parent = this.findParent(array, node)
         if(parent){
             path.push(parent.id)
-            //console.log(path)
             this.pushParent(array, parent, path)
         }
     }
@@ -147,23 +141,16 @@ class DualListBox extends React.Component {
 
             //Add missing parent nodes to right
             var tempArray = alreadyMoved
-            console.log("init tempArray", tempArray)
             pathToNode.map( n => {
                 var rNode = tempArray.find(function(element){
                     return element.id === n
                 })
-
-                console.log("rNode", rNode)
                 if(!rNode){
                     //tempArray doesnt have the node so get it from left and add it
                     let lNode = this.findNode(this.state.list, n)
-                    console.log("node from right", lNode)
                     let cloned = this.CloneObject(lNode)
                     cloned.childNodes = []
-                    console.log("clonde", cloned.childNodes)
                     tempArray.push(cloned)
-                    console.log("new tempArray", tempArray)
-                   
                 }
                 else{
                     //already have so no need to add
@@ -172,20 +159,17 @@ class DualListBox extends React.Component {
                  tempArray = tempArray.find(function(element){
                      return element.id === n
                  }).childNodes
-                 console.log("updated tempArray", tempArray)
                  return alreadyMoved
             })
 
             var parent = this.findParent(alreadyMoved, currentSelected)
             if(parent){
-                console.log("parent", parent)
                 parent.childNodes.push(currentSelected)
-                console.log("child", parent.childNodes)
             }
             else{
                 let node = this.findNode(alreadyMoved, currentSelected.id)
                 if(node){
-                    let originalNode = this.findNode(overview, currentSelected.id)
+                    let originalNode = this.findNode(this.props.tree, currentSelected.id)
                     let clone = this.CloneObject(originalNode)
                     node.childNodes = clone.childNodes
                 }
@@ -214,6 +198,7 @@ class DualListBox extends React.Component {
                 selected: null,
                 list: removed
             })
+            this.props.onnodemoved ? this.props.onnodemoved([...alreadyMoved]) : null
         }
     }
 
@@ -227,7 +212,6 @@ class DualListBox extends React.Component {
 
             //Add missing parent nodes to right
             var tempArray = unmovedList
-            console.log("init tempArray", tempArray)
             pathToNode.map( n => {
                 var rNode = tempArray.find(function(element){
                     return element.id === n
@@ -237,13 +221,9 @@ class DualListBox extends React.Component {
                 if(!rNode){
                     //tempArray doesnt have the node so get it from left and add it
                     let lNode = this.findNode(this.state.selectedList, n)
-                    console.log("node from right", lNode)
                     let cloned = this.CloneObject(lNode)
                     cloned.childNodes = []
-                    console.log("clonde", cloned.childNodes)
                     tempArray.push(cloned)
-                    console.log("new tempArray", tempArray)
-                   
                 }
                 else{
                     //already have so no need to add
@@ -252,20 +232,17 @@ class DualListBox extends React.Component {
                  tempArray = tempArray.find(function(element){
                      return element.id === n
                  }).childNodes
-                 console.log("updated tempArray", tempArray)
                  return unmovedList
             })
 
             var parent = this.findParent(unmovedList, currentSelected)
             if(parent){
-                console.log("parent", parent)
                 parent.childNodes.push(currentSelected)
-                console.log("child", parent.childNodes)
             }
             else{
                 let node = this.findNode(unmovedList, currentSelected.id)
                 if(node){
-                    let originalNode = this.findNode(overview, currentSelected.id)
+                    let originalNode = this.findNode(this.props.tree, currentSelected.id)
                     let clone = this.CloneObject(originalNode)
                     node.childNodes = clone.childNodes
                 }
@@ -296,30 +273,32 @@ class DualListBox extends React.Component {
     }
 
     moveAllToRight = e => {
-        console.log(overview);
         this.setState({
-          selectedList: JSON.parse(JSON.stringify(overview)),
+          selectedList: JSON.parse(JSON.stringify(this.props.tree)),
           list: []
         });
       };
     
     movedAllToLeft = e => {
-        console.log(this.state.selectedList)
-    this.setState({
-        list: JSON.parse(JSON.stringify(overview)),
-        selectedList: []
-    });
+        this.setState({
+            list: JSON.parse(JSON.stringify(this.props.tree)),
+            selectedList: []
+        });
     };
 //#endregion  
 
+//#region lifecycle methods
+
+//#endregion
     render() {
+        
         return ( 
             <div className="container">
                 <Row className="margin">
                 <Col md={5} > 
                     <Card style={styles.fixedcard}>
                     <DynamicTree key="root" id="root" data={this.state.list} title="Orgazations" open
-                            onClick={this.handleLeftNodeClick} isActive={this.state.selectedLeft} />                 
+                            onClick={this.handleLeftNodeClick} />                 
                     </Card>
                   
                 </Col>
@@ -347,69 +326,3 @@ class DualListBox extends React.Component {
 }
  
 export default DualListBox;
-
-
-var overview = [{
-    "parentNode": null,
-    "title": "Department One",
-    "id": "25",
-    "childNodes": [{
-        "parentNode": "25",
-        "title": "Section 1",
-        "id": "251",
-        "childNodes": [{
-            "parentNode": "251",
-            "title": "Ward 1",
-            "id": "2511",
-            "childNodes": [],
-        }]       
-    },
-    {
-        "parentNode": "25",
-        "title": "Section 2",
-        "id": "252",
-        "childNodes": [{
-            "parentNode": "252",
-            "childNodes": [],
-            "title": "Ward 1",
-            "id": "2521"
-        }],
-    },{
-        "parentNode": "25",
-        "title": "Section 3",
-        "id": "253",
-        "childNodes": [{
-            "parentNode": "253",
-            "childNodes": [],
-            "title": "Ward 1",
-            "id": "2531"
-        }],
-    }],
-}, {
-    "parentNode": null,
-    "title": "Department Two",
-    "id": "26",
-    "childNodes": [{
-        "parentNode": "26",
-        "title": "Section 3",
-        "id": "261",
-        "childNodes": [{
-            "title": "Ward 1",
-            "id": "2612",
-            "parentNode": "261",
-            "childNodes": [],          
-        }],
-    },
-    {
-        "parentNode": "26",
-        "title": "OPD 2",
-        "id": "262",
-        "childNodes": [],
-    }],
-},
-{
-    "parentNode": null,
-    "title": "OPD 1",
-    "id": "27",
-    "childNodes": [],
-}]
