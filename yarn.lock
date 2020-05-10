@@ -9076,10 +9076,10 @@ react-dom@^16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-dynamic-animated-tree@^1.0.81:
-  version "1.0.81"
-  resolved "https://registry.yarnpkg.com/react-dynamic-animated-tree/-/react-dynamic-animated-tree-1.0.81.tgz#80ac8ede7a8585421fac7130caf528b4f39888d3"
-  integrity sha512-7ldxA4QY71yZ5A3wbsM/MNGNTzcVINnwp5t5iI/YT7wam52QXuJJaZq/8YRR+e7mEo4s+rT6NwwORbegY/Mvlw==
+react-dynamic-animated-tree@1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/react-dynamic-animated-tree/-/react-dynamic-animated-tree-1.0.9.tgz#908b81ee562005abde02aba785c5fe844be65fb0"
+  integrity sha512-uE96kGTilHpiMu9M6l24kOaqNbSVLEE/hLZQiMIQqVseGqvOcNRRYsKH1jsVpeSIwkiKFohCYM83SiRhcS7eFA==
   dependencies:
     react-animated-tree "^1.0.10"
 

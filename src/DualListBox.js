@@ -44,8 +44,11 @@ class DualListBox extends React.Component {
     }
 //#region node click events
     handleLeftNodeClick = e => {
+        console.log("left node is seleced");
+            
         if(e.id !== "root")
         {
+            
             this.setState({ 
                 selected: e, 
                 selectedLeft: e,
@@ -315,8 +318,8 @@ class DualListBox extends React.Component {
                 <Row className="margin">
                 <Col md={5} > 
                     <Card style={styles.fixedcard}>
-                    <DynamicTree key="root" id="root" data={this.state.list} title="Organizations" open
-                            treeNodeClick={this.handleLeftNodeClick} isActive={this.state.selectedLeft} />                 
+                    <DynamicTree key="root" id="root" data={this.state.list} title="Orgazations" open
+                            onClick={this.handleLeftNodeClick} isActive={this.state.selectedLeft} />                 
                     </Card>
                   
                 </Col>
@@ -331,7 +334,8 @@ class DualListBox extends React.Component {
                 </Col>
                 <Col md={5}>
                     <Card style={styles.fixedcard}>
-                    <DynamicTree id="0" key="0" data={overview} title="Countries" />
+                    <DynamicTree id="root" key="root" data={this.state.selectedList} title="Selected nodes"
+                        onClick={this.handleRightNodeClick} />
                     </Card>                    
                 </Col>
 
