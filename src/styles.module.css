@@ -12,13 +12,6 @@
   margin: 5px;
 }
 
-.fixed-card{
-  min-height: 400px;
-  max-height: 400px;
-  padding: 10px;
-  overflow-y: auto;
-}
-
 .buttonWidth{
   width: 50px;
   margin: 5px;

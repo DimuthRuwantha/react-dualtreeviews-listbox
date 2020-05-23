@@ -9076,11 +9076,12 @@ react-dom@^16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-dynamic-animated-tree@1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/react-dynamic-animated-tree/-/react-dynamic-animated-tree-1.0.9.tgz#908b81ee562005abde02aba785c5fe844be65fb0"
-  integrity sha512-uE96kGTilHpiMu9M6l24kOaqNbSVLEE/hLZQiMIQqVseGqvOcNRRYsKH1jsVpeSIwkiKFohCYM83SiRhcS7eFA==
+react-dynamic-animated-tree@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-dynamic-animated-tree/-/react-dynamic-animated-tree-1.1.0.tgz#aa1a1615565e02d28cf5d8b3464e371e170a2a69"
+  integrity sha512-+DGrHOSzvxuvn7nt0cMJ3dnKQJYj822eVvsoHugDAgXjEyPb1QfpQgAlX0Kw6hPu7839OWGhfRibff6+WVy6zA==
   dependencies:
+    prop-types "^15.7.2"
     react-animated-tree "^1.0.10"
 
 react-error-overlay@^6.0.7:

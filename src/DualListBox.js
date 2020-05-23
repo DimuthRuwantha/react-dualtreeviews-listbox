@@ -1,7 +1,6 @@
 import React from 'react';
 import { Row, Col, Button, Card } from 'reactstrap';
 import  DynamicTree from 'react-dynamic-animated-tree';
-import DynamicDataTree from './DynamicDataTree'
 
 var found = false // once you move a node make sure to set this to false again
 
@@ -10,10 +9,10 @@ const styles={
         "margin": "5px"
     },
     fixedcard: {
-        "min-height": "400px",
-        "max-height": "400px",
+        "minHeight": "400px",
+        "maxHeight": "400px",
         "padding": "10px",
-        "overflow-y": "auto"
+        "overflowY": "auto"
     },
     buttonWidth: {
         "width": "50px",
@@ -100,6 +99,8 @@ class DualListBox extends React.Component {
         for (let index = 0; index < array.length; index++) {
             const element = array[index];
             if(element.id === id){
+                console.log("node found", id);
+                
                 node = element
                 break
             }
@@ -129,14 +130,98 @@ class DualListBox extends React.Component {
             this.pushParent(array, parent, path)
         }
     }
+
+    addNode(arrayTo, node){
+        // Find the parent from the destination array and add it
+        // if parent not found, add to root
+        let parent = this.findParent(arrayTo, node)
+        if(parent){
+            let existNode = parent.childNodes.find(function(element){
+                return element.id === node.id
+            })
+            console.log(existNode)
+            if(!existNode){
+                console.log("node to be added", parent)              
+                parent.childNodes.push(this.CloneObject(node))
+            }
+        }
+        else{
+            console.log("node not here so adding")
+            arrayTo.push(this.CloneObject(node))
+        }
+    }
 //#endregion
 
 //#region button click events
-    moveToSelected = e => {
+moveToSelected = e => {
+    if(this.state.selectedLeft){
+
+       var alreadyMoved = this.state.selectedList
+        var currentSelected = this.state.selected;
+        var pathToNode = this.findPath(this.state.list, currentSelected)
+        console.log("path", pathToNode);
+        pathToNode.pop()
+
+        pathToNode.map( n => {
+            let currentNodeL = this.findNode(this.state.list, n)
+            let currentNodeR = this.findNode(alreadyMoved, n)
+            if(!currentNodeR){
+                let tempNode = this.CloneObject(currentNodeL)
+                tempNode.childNodes.length = 0
+                this.addNode(alreadyMoved, tempNode)
+            }
+        })
+
+        this.addNode(alreadyMoved, currentSelected)
+        this.setState({
+            selectedList: alreadyMoved
+        })
+        
+
+       /*  var parent = this.findParent(alreadyMoved, currentSelected)
+        if(parent){
+            parent.childNodes.push(currentSelected)
+        }
+        else{
+            let node = this.findNode(alreadyMoved, currentSelected.id)
+            if(node){
+                let originalNode = this.findNode(this.props.tree, currentSelected.id)
+                let clone = this.CloneObject(originalNode)
+                node.childNodes = clone.childNodes
+            }
+            else{
+                alreadyMoved.push(currentSelected)
+            }              
+        }
+
+        var removed = this.removeNode(this.state.list, currentSelected)
+        found = false
+
+        // if parent is empty clean up
+        var selectedParent = this.findParent(this.state.list,currentSelected)
+
+        if( selectedParent && selectedParent.childNodes.length === 0){
+            removed = this.removeNode(this.state.list, selectedParent)
+            found = false
+            let root = this.findParent(this.state.list, selectedParent)
+            if(root && root.childNodes.length === 0){
+                removed = this.removeNode(this.state.list, root)
+                found = false
+            }
+        } */
+        
+    }
+}
+   /*  moveToSelected = e => {
         if(this.state.selectedLeft){
-            var alreadyMoved = this.state.selectedList
+
+            this.addNode(this.state.selectedList, this.state.selected)
+
+           var alreadyMoved = this.state.selectedList
             var currentSelected = this.state.selected;
             var pathToNode = this.findPath(this.state.list, currentSelected)
+            console.log("path", pathToNode);
+            
             pathToNode.pop()
 
             //Add missing parent nodes to right
@@ -201,7 +286,7 @@ class DualListBox extends React.Component {
             this.props.onnodemoved ? this.props.onnodemoved([...alreadyMoved]) : null
         }
     }
-
+ */
     moveToNotSelected = e => {
         if(this.state.selectedRight){
             var unmovedList = this.state.list
@@ -269,6 +354,7 @@ class DualListBox extends React.Component {
                 selected: null,
                 selectedList: removed
             })
+            this.props.onnodemoved ? this.props.onnodemoved([...removed]) : null
         }       
     }
 
@@ -282,7 +368,7 @@ class DualListBox extends React.Component {
     movedAllToLeft = e => {
         this.setState({
             list: JSON.parse(JSON.stringify(this.props.tree)),
-            selectedList: []
+            selectedList: null
         });
     };
 //#endregion  
