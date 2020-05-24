@@ -20,7 +20,6 @@ add Bootstrap4 for styling
 
 ```jsx
 import React from 'react'
-
 import { DualTreeViewListBox } from 'react-dualtreeviews-listbox'
 import 'react-dualtreeviews-listbox/dist/index.css'
 
