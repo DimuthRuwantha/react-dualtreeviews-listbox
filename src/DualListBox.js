@@ -69,8 +69,11 @@ class DualListBox extends React.Component {
 
 //#region node operations
     CloneObject(object){
-        var cloned = JSON.parse(JSON.stringify(object))
-        return cloned
+        if(object){
+            var cloned = JSON.parse(JSON.stringify(object))
+            return cloned
+        }
+        return null        
     }
 
     removeNode(array, node){
@@ -82,8 +85,14 @@ class DualListBox extends React.Component {
                     return n.id !== node.id
                 })
                 console.log(newChildNodes)
-                parent.childNodes.length = 0
-                parent.childNodes.push(...newChildNodes)
+                if(newChildNodes.length === 0){
+                    //remove parent too
+                    removeFrom = this.removeNode(removeFrom, parent)
+                }
+                else{
+                    parent.childNodes.length = 0
+                    parent.childNodes.push(...newChildNodes)
+                }            
             }
         }
         else{
@@ -106,8 +115,6 @@ class DualListBox extends React.Component {
         for (let index = 0; index < array.length; index++) {
             const element = array[index];
             if(element.id === id){
-                console.log("node found", id);
-                
                 node = element
                 break
             }
@@ -139,126 +146,111 @@ class DualListBox extends React.Component {
     }
 
     addNode(arrayTo, node){
+        // if node in destination array, just skip it
         // Find the parent from the destination array and add it
         // if parent not found, add to root
-        let parent = this.findParent(arrayTo, node)
-        if(parent){
-            let existNode = parent.childNodes.find(function(element){
-                return element.id === node.id
-            })
-            console.log(existNode)
-            if(!existNode){
-                console.log("node to be added", parent)              
-                parent.childNodes.push(this.CloneObject(node))
-            }
+        let nodeFound = this.findNode(arrayTo, node.id)
+        if(nodeFound){
+            
         }
         else{
-            console.log("node not here so adding")
-            arrayTo.push(this.CloneObject(node))
-        }
+            let parent = this.findParent(arrayTo, node)
+            if(parent){
+                let existNode = parent.childNodes.find(function(element){
+                    return element.id === node.id
+                })
+                console.log(existNode)
+                if(!existNode){
+                    console.log("node to be added", parent)              
+                    parent.childNodes.push(this.CloneObject(node))
+                }
+            }
+            else{
+                console.log("node not here so adding")
+                arrayTo.push(this.CloneObject(node))
+            }
+        }        
     }
 //#endregion
 
 //#region button click events
-moveToSelected = e => {
-    if(this.state.selectedLeft){
+    moveToSelected = e => {
+        if(this.state.selectedLeft){
 
-       var alreadyMoved = this.state.selectedList
-        var currentSelected = this.state.selected;
-        var pathToNode = this.findPath(this.state.list, currentSelected)
-        console.log("path", pathToNode);
-        pathToNode.pop()
-
-        pathToNode.map( n => {
-            let currentNodeL = this.findNode(this.state.list, n)
-            let currentNodeR = this.findNode(alreadyMoved, n)
-            if(!currentNodeR){
-                let tempNode = this.CloneObject(currentNodeL)
-                tempNode.childNodes.length = 0
-                this.addNode(alreadyMoved, tempNode)
-            }
-        })
-
-        this.addNode(alreadyMoved, currentSelected)
-        let leftArray = this.removeNode(this.state.list, currentSelected)
-        this.setState({
-            list: leftArray,
-            selectedList: alreadyMoved
-        })
-    }
-}
- 
- moveToNotSelected = e => {
-        if(this.state.selectedRight){
-            var unmovedList = this.state.list
+        var alreadyMoved = this.state.selectedList
             var currentSelected = this.state.selected;
-
-            var pathToNode = this.findPath(this.state.selectedList, currentSelected)
+            var pathToNode = this.findPath(this.state.list, currentSelected)
+            console.log("path", pathToNode);
             pathToNode.pop()
 
-            //Add missing parent nodes to right
-            var tempArray = unmovedList
             pathToNode.map( n => {
-                var rNode = tempArray.find(function(element){
-                    return element.id === n
-                })
-
-                console.log("rNode", rNode)
-                if(!rNode){
-                    //tempArray doesnt have the node so get it from left and add it
-                    let lNode = this.findNode(this.state.selectedList, n)
-                    let cloned = this.CloneObject(lNode)
-                    cloned.childNodes = []
-                    tempArray.push(cloned)
+                let currentNodeL = this.findNode(this.state.list, n)
+                let currentNodeR = this.findNode(alreadyMoved, n)
+                if(!currentNodeR){
+                    let tempNode = this.CloneObject(currentNodeL)
+                    tempNode.childNodes.length = 0
+                    this.addNode(alreadyMoved, tempNode)
                 }
-                else{
-                    //already have so no need to add
-                }
-                 //goto the pushed node and find next node in childNodes
-                 tempArray = tempArray.find(function(element){
-                     return element.id === n
-                 }).childNodes
-                 return unmovedList
             })
 
-            var parent = this.findParent(unmovedList, currentSelected)
-            if(parent){
-                parent.childNodes.push(currentSelected)
+            let currentNodeR = this.findNode(alreadyMoved, currentSelected.id)
+            if(currentNodeR){
+                //if selected node is in rhs, just add all the remoainging childrren
+                let currentNodeL = this.findNode(this.state.list, currentSelected.id)
+                currentNodeL.childNodes.map( n => {
+                    this.addNode(alreadyMoved, n)
+                })
             }
             else{
-                let node = this.findNode(unmovedList, currentSelected.id)
-                if(node){
-                    let originalNode = this.findNode(this.props.tree, currentSelected.id)
-                    let clone = this.CloneObject(originalNode)
-                    node.childNodes = clone.childNodes
-                }
-                else{
-                    unmovedList.push(currentSelected)
-                }
+                this.addNode(alreadyMoved, currentSelected)
             }
-
-            var removed = this.removeNode(this.state.selectedList, currentSelected)
-            found = false
-            // if parent is empty clean up
-            var selectedParent = this.findParent(removed,currentSelected)
-            if( selectedParent && selectedParent.childNodes.length === 0){
-                removed = this.removeNode(removed, selectedParent)
-                found = false
-                let root = this.findParent(this.state.selectedList, selectedParent)
-                if(root && root.childNodes.length === 0){
-                    removed = this.removeNode(this.state.selectedList, root)
-                    found = false
-                }
-            }
-
+            let leftArray = this.removeNode(this.state.list, currentSelected)
             this.setState({
-                selected: null,
-                selectedList: removed
+                list: leftArray,
+                selectedList: alreadyMoved
             })
-            this.props.onnodemoved ? this.props.onnodemoved([...removed]) : null
-        }       
+            this.props.onnodemoved ? this.props.onnodemoved([...alreadyMoved]) : null
+        }
     }
+ 
+    moveToNotSelected(){
+        if(this.state.selectedRight){
+            var leftArray = this.state.list
+            var alreadyMoved = this.state.selectedList
+            var currentSelected = this.state.selected;
+            var pathToNode = this.findPath(alreadyMoved, currentSelected)
+            pathToNode.pop()
 
+            pathToNode.map( n => {
+                let currentNodeL = this.findNode(this.state.list, n)
+                let currentNodeR = this.findNode(alreadyMoved, n)
+                if(!currentNodeL){
+                    let tempNode = this.CloneObject(currentNodeR)
+                    tempNode.childNodes.length = 0
+                    this.addNode(leftArray, tempNode)
+                }
+            })
+
+            let currentNodeL = this.findNode(leftArray, currentSelected.id)
+            if(currentNodeL){
+                //if selected node is in rhs, just add all the remoainging childrren
+                let currentNodeR = this.findNode(alreadyMoved, currentSelected.id)
+                currentNodeR.childNodes.map( n => {
+                    this.addNode(leftArray, n)
+                })
+            }
+            else{
+                this.addNode(leftArray, currentSelected)
+            }
+            alreadyMoved = this.removeNode(alreadyMoved, currentSelected)
+            this.setState({
+                list: leftArray,
+                selectedList: alreadyMoved
+            })
+            this.props.onnodemoved ? this.props.onnodemoved([...alreadyMoved]) : null
+        }
+    }
+  
     moveAllToRight = e => {
         this.setState({
           selectedList: JSON.parse(JSON.stringify(this.props.tree)),

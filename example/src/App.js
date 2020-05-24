@@ -50,7 +50,7 @@ var data = [{
     "childNodes": [{
       "title": "Pune",
       "id": "211",
-      "parentNode": "2",
+      "parentNode": "21",
       "childNodes": [],
     }],
   }],  
@@ -61,8 +61,8 @@ const App = () => {
   const [selectedTree, setTree] = useState([])
 
   return <div>
-    <p>{JSON.stringify(selectedTree)}</p>
     <DualTreeViewListBox data={data} onnodemoved={(list) => setTree(list)} />
+    <pre>{JSON.stringify(selectedTree, undefined, 2)}</pre>
     </div>
 }
 

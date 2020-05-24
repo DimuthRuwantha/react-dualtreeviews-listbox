@@ -27,20 +27,34 @@ import 'react-dualtreeviews-listbox/dist/index.css'
 var data = [{
   "title": "Sri Lanka",
   "id": "1",
+  "parentNode": null,
   "childNodes": [{
       "title": "Western Province",
       "id": "11",
+      "parentNode": "1",
       "childNodes": [{
         "title": "Colombo District",
         "id": "111",
+        "parentNode": "11",
+        "childNodes": [], 
+      },{
+        "title": "Gampaha District",
+        "id": "112",
+        "parentNode": "11",
+        "childNodes": [], 
+      },{
+        "title": "Kaluthara District",
+        "id": "113",
+        "parentNode": "11",
         "childNodes": [], 
       }],
   },
   {
     "title": "Central Province",
     "id": "12",
+    "parentNode": "1",
     "childNodes": [{
-      "parentNode": null,
+      "parentNode": "12",
       "childNodes": [],
       "title": "Kandy",
       "id": "121"
@@ -53,16 +67,24 @@ var data = [{
   "childNodes": [{
     "title": "Maharashtra",
     "id": "21",
+    "parentNode": "2",
     "childNodes": [{
       "title": "Pune",
       "id": "211",
+      "parentNode": "21",
       "childNodes": [],
     }],
   }],  
 }]
 
+
 const App = () => {
-  return <DualTreeViewListBox data={data} />
+  const [selectedTree, setTree] = useState([])
+
+  return <div>
+  <DualTreeViewListBox data={data} onnodemoved={(list) => setTree(list)} />
+  <pre>{JSON.stringify(selectedTree, undefined, 2)}</pre>
+</div>
 }
 
 export default App
