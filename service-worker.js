@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/react-dualtreeviews-listbox/precache-manifest.1e5cfb65fc56be2e81105433f6f6a26c.js"
+  "/react-dualtreeviews-listbox/precache-manifest.5177bfde7a5dee9382be5983972b016a.js"
 );
 
 self.addEventListener('message', (event) => {
