@@ -3,6 +3,7 @@
 > The list box include dynamically generated tree
 
 [![NPM](https://img.shields.io/npm/v/react-dualtreeviews-listbox.svg)](https://www.npmjs.com/package/react-dualtreeviews-listbox) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+![Node.js CI](https://github.com/DimuthRuwantha/react-dualtreeviews-listbox/workflows/Node.js%20CI/badge.svg)
 
 ## Install
 
