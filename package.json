@@ -5,6 +5,7 @@
   "author": "DimuthRuwantha",
   "license": "MIT",
   "repository": "DimuthRuwantha/react-dualtreeviews-listbox",
+  "homepage": "https://dimuthruwantha.github.io/react-dualtreeviews-listbox/",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
