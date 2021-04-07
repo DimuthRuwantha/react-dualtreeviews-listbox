@@ -13,7 +13,7 @@ const styles={
         "maxHeight": "400px",
         "padding": "10px",
         "overflowY": "auto",
-        "background": "Grey",
+        "background": "white",
         "color": "White"
     },
     buttonWidth: {
